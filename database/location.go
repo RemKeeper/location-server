@@ -6,7 +6,7 @@ func InsertLocationData(record model.LocationRecord) error {
 	// 插入数据到 D1 数据库
 	query := `
 		INSERT INTO location_records (device_id,timestamp,latitude,longitude,altitude,signal_strength,speed,satellites,created_at)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 	`
 	_, err := locationDb.Exec(
 		query,
