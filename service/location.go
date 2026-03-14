@@ -27,7 +27,7 @@ func (s *LocationService) SetLocation(w http.ResponseWriter, r *http.Request) {
 	}
 	err := database.InsertLocationData(locationRecord)
 	if err != nil {
-		http.Error(w, "Failed to save location data", http.StatusInternalServerError)
+		http.Error(w, "Failed to save location data:"+err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
