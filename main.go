@@ -1,15 +1,14 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/syumai/workers"
+	"github.com/syumai/workers/_templates/cloudflare/deploy-go/router"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		msg := "Hello, Go!"
-		w.Write([]byte(msg))
-	})
+	// 设置路由
+	router.SetupRoutes()
+
+	// 启动服务
 	workers.Serve(nil) // use http.DefaultServeMux
 }
