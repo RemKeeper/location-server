@@ -1,21 +1,30 @@
 package middleware
 
 import (
+	"github.com/syumai/workers/cloudflare"
 	"log"
 	"net/http"
 )
+
+const EnvDevKey = "DEV_KEY"
 
 // AuthMiddleware 认证中间件示例
 func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// 这里可以添加认证逻辑
-		token := r.Header.Get("Authorization")
+		devKey := r.Header.Get(EnvDevKey)
 
-		if token == "" {
-			log.Println("No authorization token provided")
-			// 可以选择是否继续执行
-			// http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			// return
+		if devKey == "" {
+			log.Println("No authorization devKey provided")
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte("Unauthorized: No devKey provided"))
+			return
+		} else {
+			if cloudflare.Getenv(EnvDevKey) != devKey {
+				w.WriteHeader(http.StatusUnauthorized)
+				w.Write([]byte("Unauthorized: Invalid devKey"))
+				return
+			}
 		}
 
 		log.Printf("Auth check passed for: %s", r.URL.Path)

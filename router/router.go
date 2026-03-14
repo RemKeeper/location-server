@@ -20,9 +20,9 @@ func SetupRoutes() {
 		middleware.CORSMiddleware,
 	))
 
-	// 位置服务路由 - 使用日志和CORS中间件
+	// 位置服务路由 - 静态路径
 	http.HandleFunc("/api/location", middleware.Chain(
-		locationService.GetLocation,
+		locationService.SetLocation,
 		middleware.LoggerMiddleware,
 		middleware.CORSMiddleware,
 	))

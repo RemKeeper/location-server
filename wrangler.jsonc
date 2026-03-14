@@ -5,5 +5,15 @@
   "compatibility_date": "2025-04-08",
   "build": {
     "command": "npm run build"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "location-db",
+      "database_id": "0809eb17-1d52-40ba-bc79-b065a2b4f232"
+    }
+  ],
+  "vars": {
+    "DEV_KEY": "zXsm0aL6ui0KZubjjF47CpsW2hgNypRCuEYYq16yaKug0LsdEmgWyRYczWffjosd"
   }
 }
