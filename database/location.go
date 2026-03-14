@@ -5,7 +5,7 @@ import "github.com/syumai/workers/_templates/cloudflare/deploy-go/model"
 func InsertLocationData(record model.LocationRecord) error {
 	// 插入数据到 D1 数据库
 	query := `
-		INSERT INTO location_data (id, device_id,timestamp,latitude,longitude,altitude,signal_strength,speed,satellites,created_at)
+		INSERT INTO location_records (id, device_id,timestamp,latitude,longitude,altitude,signal_strength,speed,satellites,created_at)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 	`
 	_, err := locationDb.Exec(
