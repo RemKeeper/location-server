@@ -26,13 +26,31 @@ func (s *LocationService) SetLocation(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
+	// basic validation: device id and coordinate ranges
+	if locationRecord.DeviceID == "" {
+		http.Error(w, "Missing device_id", http.StatusBadRequest)
+		return
+	}
+	// validate lat/lon ranges
+	if locationRecord.Latitude < -90 || locationRecord.Latitude > 90 || locationRecord.Longitude < -180 || locationRecord.Longitude > 180 {
+		http.Error(w, "Invalid latitude or longitude", http.StatusBadRequest)
+		return
+	}
+
+	// convert WGS-84 to GCJ-02 when inside China
+	if !outOfChina(locationRecord.Latitude, locationRecord.Longitude) {
+		lat, lon := WGS84ToGCJ02(locationRecord.Latitude, locationRecord.Longitude)
+		locationRecord.Latitude = lat
+		locationRecord.Longitude = lon
+	}
+
 	err := database.InsertLocationData(locationRecord)
 	if err != nil {
 		http.Error(w, "Failed to save location data:"+err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Location data saved successfully"))
+	_, _ = w.Write([]byte("Location data saved successfully"))
 }
 
 // GetLocationByDevIDAndTime  根据设备ID和时间范围获取位置信息
@@ -72,5 +90,5 @@ func (s *LocationService) GetLocationByDevIDAndTime(w http.ResponseWriter, r *ht
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write(responseData)
+	_, _ = w.Write(responseData)
 }
