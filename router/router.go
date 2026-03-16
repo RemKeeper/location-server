@@ -27,6 +27,13 @@ func SetupRoutes() {
 		middleware.CORSMiddleware,
 	))
 
+	// 通过设备ID和时间获取位置信息
+	http.HandleFunc("/api/location/query", middleware.Chain(
+		locationService.GetLocationByDevIDAndTime,
+		middleware.LoggerMiddleware,
+		middleware.CORSMiddleware,
+	))
+
 	// 管理员路由 - 使用认证、日志和CORS中间件
 	http.HandleFunc("/api/admin", middleware.Chain(
 		adminService.HandleAdmin,
