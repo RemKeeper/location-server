@@ -55,6 +55,7 @@ func GetLocationByDevIdAndTime(deviceId string, startTime int64, endTime int64) 
 		if err != nil {
 			return nil, err
 		}
+		records = append(records, record)
 	}
 	return records, nil
 }
