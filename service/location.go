@@ -37,12 +37,12 @@ func (s *LocationService) SetLocation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// convert WGS-84 to GCJ-02 when inside China
-	if !outOfChina(locationRecord.Latitude, locationRecord.Longitude) {
-		lat, lon := WGS84ToGCJ02(locationRecord.Latitude, locationRecord.Longitude)
-		locationRecord.Latitude = lat
-		locationRecord.Longitude = lon
-	}
+	//// convert WGS-84 to GCJ-02 when inside China
+	//if !outOfChina(locationRecord.Latitude, locationRecord.Longitude) {
+	//	lat, lon := WGS84ToGCJ02(locationRecord.Latitude, locationRecord.Longitude)
+	//	locationRecord.Latitude = lat
+	//	locationRecord.Longitude = lon
+	//}
 
 	err := database.InsertLocationData(locationRecord)
 	if err != nil {
